@@ -19,5 +19,18 @@ module.exports = {
         }
 
         return fornecedor
+    },
+    async atualizar(id, dadosParaAtualizar){
+        return Modelo.update(
+            dadosParaAtualizar, 
+            {
+                where: { id: id }
+            }
+        )
+    },
+    async remover(id){
+        return Modelo.destroy({
+            where: { id: id }
+        })
     }
 }
