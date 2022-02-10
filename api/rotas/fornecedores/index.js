@@ -10,7 +10,7 @@ roteador.get('/', async (req, res) => {
     )
 })
 
-roteador.post('/', async (req, res) => {
+roteador.post('/', async (req, res, next) => {
     try {
         const dadosRecebidos = req.body
         const fornecedor = new Fornecedor(dadosRecebidos)
@@ -22,16 +22,11 @@ roteador.post('/', async (req, res) => {
             JSON.stringify(fornecedor)
         )
     } catch (err) {
-        res.status(400)
-        res.send(
-            JSON.stringify({
-                mensagem: err.message   
-            })
-        )   
+        next(err)
     }
 })
 
-roteador.get('/:idFornecedor', async (req, res) => {
+roteador.get('/:idFornecedor', async (req, res, next) => {
     try {
         const id = req.params.idFornecedor
         const fornecedor = new Fornecedor({ id: id })
@@ -42,16 +37,11 @@ roteador.get('/:idFornecedor', async (req, res) => {
             JSON.stringify(fornecedor)
         )
     } catch (err) {
-        res.status(404)
-        res.send(
-            JSON.stringify({
-                mensagem: err.message   
-            })
-        )   
+        next(err)
     }
 })
 
-roteador.put('/:idFornecedor', async (req, res) => {
+roteador.put('/:idFornecedor', async (req, res, next) => {
     try {
         const id = req.params.idFornecedor
         const dados = Object.assign({}, req.body, {id: id})
@@ -61,16 +51,11 @@ roteador.put('/:idFornecedor', async (req, res) => {
         res.status(204)
         res.end()
     } catch (err) {
-        res.status(400)
-        res.send(
-            JSON.stringify({
-                mensagem: err.message   
-            })
-        )     
+        next(err)
     }
 })
 
-roteador.delete('/:idFornecedor', async (req, res) => {
+roteador.delete('/:idFornecedor', async (req, res, next) => {
     try {
         const id = req.params.idFornecedor
         const fornecedor = new Fornecedor({ id: id })    
@@ -81,12 +66,7 @@ roteador.delete('/:idFornecedor', async (req, res) => {
         res.status(204)
         res.end()
     } catch (err) {
-        res.status(404)
-        res.send(
-            JSON.stringify({
-                mensagem: err.message   
-            })
-        )     
+        next(err)
     }
 })
 
