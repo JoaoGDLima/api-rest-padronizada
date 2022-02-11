@@ -7,13 +7,23 @@ module.exports = {
                 fornecedor: idFornecedor
             }
         })
-    }
-    
-    
-    /*inserir(fornecedor){
-        return Modelo.create(fornecedor)
     },
-    async pegarPorId(id){
+    
+    
+    inserir(dados){
+        return Modelo.create(dados)
+    },
+
+    async remover(idProduto, idfornecedor){
+        return Modelo.destroy({
+            where: { 
+                id: idProduto, 
+                fornecedor: idfornecedor
+            }
+        })
+    }
+
+    /*async pegarPorId(id){
         const fornecedor  = await Modelo.findOne({
             where: {
                 id: id
@@ -34,9 +44,6 @@ module.exports = {
             }
         )
     },
-    async remover(id){
-        return Modelo.destroy({
-            where: { id: id }
-        })
-    }*/
+
+*/
 }
