@@ -1,11 +1,14 @@
 const Modelo = require('./ModeloTabelaProduto')
+const instancia = require('../../../banco-de-dados')
+const NaoEncontrado = require('../../../erros/NaoEncontrado')
 
 module.exports = {
     listar (idFornecedor) {
         return Modelo.findAll({ 
             where: {
                 fornecedor: idFornecedor
-            }
+            },
+            raw: true
         })
     },
     
@@ -21,29 +24,45 @@ module.exports = {
                 fornecedor: idfornecedor
             }
         })
-    }
+    },
 
-    /*async pegarPorId(id){
-        const fornecedor  = await Modelo.findOne({
+    async pegarPorId(idProduto, idFornecedor){
+        const encontrado  = await Modelo.findOne({
             where: {
-                id: id
-            }
+                id: idProduto,
+                fornecedor: idFornecedor
+            },
+            raw: true
         })
 
-        if (!fornecedor){
+        if (!encontrado){
             throw new NaoEncontrado()
         }
 
-        return fornecedor
+        return encontrado
     },
-    async atualizar(id, dadosParaAtualizar){
+    
+    async atualizar(dadosDoProduto, dadosParaAtualizar){
         return Modelo.update(
             dadosParaAtualizar, 
             {
-                where: { id: id }
+                where: dadosDoProduto
             }
         )
     },
 
-*/
+    async subtrair(idProduto, idFornecedor, campo, quantidade) {
+        return instancia.transaction(async transacao => {
+            const produto = await Modelo.findOne({
+                where: {
+                    id: idProduto,
+                    fornecedor: idFornecedor
+                }
+            })
+
+            produto[campo] = quantidade
+            await produto.save()
+            return produto
+        })
+    }
 }
