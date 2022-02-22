@@ -36,7 +36,7 @@ module.exports = {
         })
 
         if (!encontrado){
-            throw new NaoEncontrado()
+            throw new NaoEncontrado('Produto')
         }
 
         return encontrado
